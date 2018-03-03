@@ -1,51 +1,85 @@
-'''
-Module containing the database set-up
-'''
-
 # Import dependencies
-import os
-from sqlalchemy import create_engine, Column, Integer, String, func
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Session
+import warnings
+warnings.filterwarnings('ignore')
 
-# Base definition
+import os
+import pandas as pd
+import numpy as np
+from sqlalchemy import create_engine, Column, Integer, String, Float
+from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
-# Create engine
+from sqlalchemy.orm import Session
+import datetime as dt
 
-# dbpath = os.path.join('db', 'pets.sqlite')
-# engine = create_engine(f'sqlite:///{dbpath}')
+violation_file = os.path.join('Speed_Camera_Violations.csv')
+station_file = os.path.join('Stations', 'Divvy_Stations_2017_Q3Q4.csv')
 
+# Read witih Pandas
+violations_df = pd.read_csv(violation_file)
+stations_df = pd.read_csv(station_file)
 
-# # Pet class
-# class Pet(Base):
-#     __tablename__ = 'pets'
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String(64))
-#     pet_type = Column(String(64))
-#     age = Column(Integer)
+del stations_df['Unnamed: 7']   
 
-# Base.metadata.create_all(engine)
+stations_df['online_date'] = pd.to_datetime(stations_df['online_date'])
+stations_df['online_date'] = stations_df['online_date'].dt.date
+stations_df.rename(index=str, columns={"id": "station_id", "name":"station_name", "dpcapacity":"capacity"},inplace=True)
 
-# # Create session
-# session = Session(engine)
+violations_df['violation_id'] = violations_df.index
+violations_df['VIOLATION DATE'] = pd.to_datetime(violations_df['VIOLATION DATE'])
+violations_df['VIOLATION DATE'] = violations_df['VIOLATION DATE'].dt.date
+violations_df.rename(index=str, columns={"CAMERA ID": "camera_id", "VIOLATION DATE":"violation_date", "X COORDINATE":"x_coordinate", "Y COORDINATE":"y_coordinate"},inplace=True)
 
+# Define a Base class for Station
+class Stations(Base):
+    __tablename__ = "stations"
+    
+    station_id = Column(Integer, primary_key=True)
+    station_name = Column(String)
+    city = Column(String)
+    latitude = Column(Float)
+    longitude = Column(Float)
+    capacity = Column(Integer)
+    online_date = Column(String)
 
-# if __name__ == '__main__':
-#     # Drop table
-#     Base.metadata.drop_all(engine)
+# Define a Base class for Violations
+class Violations(Base):
+    __tablename__ = "violations"
+    
+    address = Column(String)
+    camera_id = Column(String)
+    violation_date = Column(String)
+    violations = Column(Float)
+    x_coordinate = Column(Float)
+    y_coordinate = Column(Float)
+    latitude = Column(Float)
+    longitude = Column(Float)
+    location = Column(String)
+    violation_id = Column(Integer, primary_key=True)
 
-#     # Create all tables
-#     Base.metadata.create_all(engine)
+# Create database engine
+engine = create_engine("sqlite:///bikeshare_traffic.sqlite")
 
-#     # Add data to database
-#     session.add_all([
-#         Pet(name='Justin Timbersnake', age=3, pet_type='Snake'),
-#         Pet(name='Pawtrick Stewart', age=7, pet_type='Dog'),
-#         Pet(name='Farrah Pawcett', age=2, pet_type='Dog'),
-#         Pet(name='Isaac Mewton', age=5, pet_type='Cat'),
-#         Pet(name='Winston Purrchill', age=8, pet_type='Cat'),
-#         Pet(name='Reese Whiskerspoon', age=3, pet_type='Cat'),
-#         Pet(name='Dog Marley', age=10, pet_type='Dog'),
-#     ])
-#     session.commit()
+# Create tables in the database
+Base.metadata.create_all(engine)
+
+session = Session(bind=engine)
+
+# Write data stored in a DataFrame to a SQL database
+violations_df.to_sql(name='violations', con=engine, if_exists = 'replace', index=False)
+stations_df.to_sql(name='stations', con=engine, if_exists = 'replace', index=False)
+session.commit()
+
+# Query the Stations table
+station_list = session.query(Stations)
+for station in station_list:
+    print(station.station_id, station.station_name, station.city, station.latitude, station.longitude, station.capacity, station.online_date)
+
+# Query the Stations table
+violation_list = session.query(Violations)
+for violation in violation_list:
+    print(violation.address , violation.camera_id ,violation.violation_date ,violation.violations,
+          violation.x_coordinate ,violation.y_coordinate ,violation.latitude ,violation.longitude,
+          violation.location ,violation.violation_id )
+    
+   
