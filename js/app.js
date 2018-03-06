@@ -34,9 +34,11 @@ d3.csv(stationsCSV, function(error, response) {
             var station = response[i];
             // console.log(station);
 
-            bikeStations.push(L.marker([parseInt(station.latitude), parseInt(station.longitude)], {icon: blueIcon}));
+
+
+            bikeStations.push(L.marker([parseFloat(station.latitude), parseFloat(station.longitude)], {icon: blueIcon}));
             
-            
+            console.log(parseFloat(station.latitude));
             
     };
 
@@ -46,7 +48,7 @@ d3.csv(stationsCSV, function(error, response) {
     var myMap = L.map("map-id", {
         center: ChicagoCoords,
         zoom: mapZoomLevel,
-        layers: [lightmap, overLayLayers]
+        layers: [lightmap, stationsLayer]
     });
     
     var baseMaps = {
