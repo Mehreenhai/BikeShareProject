@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.pool import StaticPool
 Base = declarative_base()
 
 from sqlalchemy.orm import Session
@@ -58,7 +59,11 @@ class Violations(Base):
     violation_id = Column(Integer, primary_key=True)
 
 # Create database engine
-engine = create_engine("sqlite:///bikeshare_traffic.sqlite")
+# engine = create_engine("sqlite:///bikeshare_traffic.sqlite")
+
+engine = create_engine('sqlite:///bikeshare_traffic.sqlite',
+                    connect_args={'check_same_thread':False},
+                    poolclass=StaticPool)
 
 # Create tables in the database
 Base.metadata.create_all(engine)
@@ -82,4 +87,9 @@ for violation in violation_list:
           violation.x_coordinate ,violation.y_coordinate ,violation.latitude ,violation.longitude,
           violation.location ,violation.violation_id )
     
-   
+if __name__ == '__main__':
+
+    Base.metadata.drop_all(engine)
+
+    # Create all tables
+    Base.metadata.create_all(engine)
