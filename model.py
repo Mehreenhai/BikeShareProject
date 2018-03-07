@@ -82,4 +82,9 @@ for violation in violation_list:
           violation.x_coordinate ,violation.y_coordinate ,violation.latitude ,violation.longitude,
           violation.location ,violation.violation_id )
     
-   
+if __name__ == '__main__':
+
+    Base.metadata.drop_all(engine)
+
+    # Create all tables
+    Base.metadata.create_all(engine)
