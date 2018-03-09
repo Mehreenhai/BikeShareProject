@@ -137,12 +137,11 @@ d3.json(stations_url, function(error, response) {
             for (var i = 0; i < violation_list.length; i++) {
                 // var violation = violation_list[i];
                 if (violation_list) {
-                    heatArray.push(violation_lat[i], violation_long[i]);
+                    heatArray.push([parseFloat(violation_lat[i]), parseFloat(violation_long[i])]);
                     violation_count.push(viocount[i]);
-
-                    console.log("Lat: " + violation_lat[i]);
                 }
             }
+            console.log(heatArray);
 
             // console.log("BikeStations: " + bikeStations);
             var stationsLayer2017 = L.layerGroup(bikeStations2017);
@@ -181,26 +180,3 @@ d3.json(stations_url, function(error, response) {
 
     });
 });
-
-// d3.json(violations_url, function(response){
-
-//     var heatArray = [];
-//     var violation_count = [];
-    
-//     var violation_list = response["violation_address"];
-//     var violation_lat= response["violation_lat"];
-//     var violation_long = response["violation_long"];
-//     var viocount = response["violation_count"];
-
-
-//     for (var i = 0; i < violation_list.length; i++) {
-//         // var violation = violation_list[i];
-//         if (violation_list) {
-//             heatArray.push(violation_lat[i], violation_long[i]);
-//             violation_count.push(viocount[i]);
-//         }
-//     }
-
-    
-// });
-
