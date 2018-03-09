@@ -2,12 +2,17 @@
 
 // Load map 
 
-map.on('load', function(){
+// map.on('load', function(){
 
     var ChicagoCoords = [41.8781, -87.6298];
     var mapZoomLevel = 10;
 
     var stationsCSV = "../Stations/Divvy_Stations_2017_Q3Q4.csv";
+    var stations_url = "/stations";
+    var trips_url = "/trips";
+    var violations_url = "/violations";
+
+    console.log(stations_url);
 
     var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia2pnMzEwIiwiYSI6ImNpdGRjbWhxdjAwNG0yb3A5b21jOXluZTUifQ.T6YbdDixkOBWH_k9GbS8JQ", {
         attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"http://mapbox.com\">Mapbox</a>",
@@ -66,7 +71,7 @@ map.on('load', function(){
         shadowSize: [41, 41]
     });
 
-    d3.csv(stationsCSV, function(error, response) {
+    d3.json(stations_url, function(error, response) {
         console.log(response);
 
         if(error) {
@@ -77,36 +82,37 @@ map.on('load', function(){
 
         for (var i=0; i<response.length; i++) {
 
-                var station = response[i];
+                var $lat = response.station_lat[i];
+                var $long = respnse.station_long[i];
+                var $date = response.online_date[i];
                 // console.log(station);
 
-                $date = station.online_date.split('/')
-                $year = $date[2].substring(0,4);
+                $year = $date.substring(0,4);
                 console.log("Year: " + $year);
                 
                 if ($year == "2017") {
 
-                    bikeStations2017.push(L.marker([parseFloat(station.latitude), parseFloat(station.longitude)], {icon: blueIcon}));
+                    bikeStations2017.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: blueIcon}));
 
                     console.log("2017 bike," + $date);
 
                 } else if ($year > "2016"){
 
-                    bikeStations2016.push(L.marker([parseFloat(station.latitude), parseFloat(station.longitude)], {icon: yellowIcon}));
+                    bikeStations2016.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: yellowIcon}));
 
                     console.log("2016 bike," + $date);
 
                 } else if ($year > "2015") {
 
-                    bikeStations2015.push(L.marker([parseFloat(station.latitude), parseFloat(station.longitude)], {icon: greenIcon}));
+                    bikeStations2015.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: greenIcon}));
 
                 } else if ($year > "2014") {
 
-                    bikeStations2014.push(L.marker([parseFloat(station.latitude), parseFloat(station.longitude)], {icon: orangeIcon}));
+                    bikeStations2014.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: orangeIcon}));
 
                 } else {
 
-                    bikeStations2013.push(L.marker([parseFloat(station.latitude), parseFloat(station.longitude)], {icon: redIcon}));
+                    bikeStations2013.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: redIcon}));
 
                 }
                 
@@ -153,24 +159,24 @@ map.on('load', function(){
 
     // function filter by YEAR
 
-    function filterBy(year) {
+    // function filterBy(year) {
 
-        var filters = ['==', 'year', year];
-        // map.setFilter('earthquake-circles', filters);
-        // map.setFilter('earthquake-labels', filters);
+    //     var filters = ['==', 'year', year];
+    //     // map.setFilter('earthquake-circles', filters);
+    //     // map.setFilter('earthquake-labels', filters);
 
-        // Set the label to the month
-        document.getElementById('year').textContent = year[year];
-    }
+    //     // Set the label to the month
+    //     document.getElementById('year').textContent = year[year];
+    // }
 
     //Set filter to first year
     // 0 = 2013
-    filterBy(0);
+    // filterBy(0);
 
-    document.getElementById('slider').addEventListener('input', function(e) {
-        var year = parseInt(e.target.value, 10);
-        console.log(year);
-        filterBy(year);
+    // document.getElementById('slider').addEventListener('input', function(e) {
+    //     var year = parseInt(e.target.value, 10);
+    //     console.log(year);
+    //     filterBy(year);
     });
 
-});
+// });
