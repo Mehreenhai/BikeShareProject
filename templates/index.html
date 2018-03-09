@@ -1,33 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Chicago BikeShare vs Traffic Incidents</title>
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="http://www.ridemetrobike.com/wp-content/uploads/2016/04/cropped-metro-bike-share-favicon.png"/>
+    <title>Chicago BikeShare vs Traffic Incidents</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css">
   
-  <!-- Our CSS -->
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Our CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <!-- The div that holds our map -->
-
-<div id="map-id"></div>
-<hr>
-<div class='map-overlay top'>
-        
-        <div class='map-overlay-inner'>
-            <h2>Chicago BikeShare</h2>
-            <label id='year'></label>
-            <input id='slider' type='range' min='0' max='5' step='1' value='0' />
+    <div class="container">
+        <div class="jumbotron text-center">
+            <div class="bg"></div>
+            <h1><strong>Number of Bikeshare Stations vs. Number of Traffic Incidents</strong></h1>
+            <p><strong>In the City of Chicago between 2013-2017</strong></p>
+        </div>    
+    <!-- The div that holds our map -->
+        <div id="map-id"></div>
+        <hr>
+        <div class='map-overlay top'>
+            <div class='map-overlay-inner'>
+                <h2>Chicago BikeShare</h2>
+                <label id='year'></label>
+                <input id='slider' type='range' min='0' max='5' step='1' value='0' />
+            </div>    
         </div>
-        
-</div>
-
+    <!-- The div that holds the timeline chart -->
+        <div id="timeline"></div>
+    <!-- The div that holds our analysis --> 
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-8"></div>
+        </div>    
+    </div>  
 
 <!-- D3 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
-
 
 <!-- Leaflet JavaScript -->
 <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
