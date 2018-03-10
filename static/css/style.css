@@ -55,7 +55,6 @@ html, body {
 .container div {
   position: relative;
   z-index: 1;
-  color: #B22222;
   border-radius: 25px;
 }
 
@@ -77,14 +76,18 @@ html, body {
 }
 
 body {
-  background-color:#B0E3E3;
+  /* background:#B0E3E3; */
+  background: linear-gradient(180deg, #F0FFFF, #B0C4DE);
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 #transition {
   width: 80px;
-  height: 100px;
-  background-color: #92B901;
-  color: #ffffff;
+  height: auto;
+  background-color: #00FA9A;
+  color: black;
   position: relative;
   padding: 10px;
   float: left;
