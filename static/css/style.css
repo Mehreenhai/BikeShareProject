@@ -9,11 +9,18 @@ html, body {
 #map-id {
   
   height: 500px;
-  width: 800px;
+  width: 700px;
   padding: 0;
   margin: 0;
 }
 
+.text1 {
+  background-color: White;
+}
+
+.bg {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}
 .map-overlay {
     font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     /* position: absolute; */
@@ -102,3 +109,5 @@ body {
 #transition:hover {
   width: 40%;
 }
+
+#timeline2 {padding-top: 20px;}

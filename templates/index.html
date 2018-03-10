@@ -23,8 +23,18 @@
             <p><strong>In the City of Chicago between 2013-2017</strong></p>
         </div>    
     <!-- The div that holds our map -->
-        <div id="map-id"></div>
+    <div class="row">      
+        <div class="col-md-8" id="map-id"></div>
         <hr>
+        <div class=" col-md-offset-1 col-md-3 text1">
+            <h5>Group Members: Aizzah, Mehreen, Nikki and Rommel
+                <br><br>
+                Aim: To vizualize the relationship (if any) between the increase of bikeshare stations in Chicago and traffic incidents in the city.
+                <br><br>
+                Methods: Heatmap, Piechart, timeseries line chart.
+            </h5>
+        </div>
+    </div> 
         <!-- <div class='map-overlay top'>
             <div class='map-overlay-inner'>
                 <h2>Chicago BikeShare</h2>
@@ -33,7 +43,27 @@
             </div>    
         </div> -->
     <!-- The div that holds the timeline chart -->
-        <div id="timeline"></div>
+    <div class="row">
+        <div class="col-md-12" style="height:50px;"></div>
+    </div>
+            
+    <div class="row">
+        
+        <div>     
+ 
+            <div class=" col-md-offset-8 col-md-4">
+            <canvas id="timeline2" width="50" height="50"> 
+            </canvas>  
+            </div>              
+        </div>
+    </div>  
+    <div class="row">
+        <div class="col-md-8">         
+            <canvas id="timeline1" width="50" height="25"></canvas>   
+        </div> 
+    </div>
+        
+
     <!-- The div that holds our analysis --> 
         <div class="row">
             <div id="transition">
@@ -49,11 +79,16 @@
 <!-- Leaflet JavaScript -->
 <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
 
+<!-- ChartJs JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+
 <!-- LEAFLET-HEAT -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/leaflet-heat.js') }}"></script>
   
 <!-- Our JavaScript -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
+<!-- ChartJS Script -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/trips.js') }}"></script>
 
 </body>
 </html>

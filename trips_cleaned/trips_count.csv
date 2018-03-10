@@ -1,29 +1,3 @@
-count_id,year,gender,user_type,trip_count
-0,2014,,Customer,791149
-1,2014,,Subscriber,131
-2,2014,Female,Customer,65
-3,2014,Female,Subscriber,407556
-4,2014,Male,Customer,26
-5,2014,Male,Subscriber,1255707
-6,2015,,Customer,929858
-7,2015,,Dependent,7
-8,2015,,Subscriber,106
-9,2015,Female,Customer,12
-10,2015,Female,Subscriber,567339
-11,2015,Male,Customer,13
-12,2015,Male,Dependent,136
-13,2015,Male,Subscriber,1685968
-14,2016,,Customer,858121
-15,2016,,Subscriber,308
-16,2016,Female,Customer,17
-17,2016,Female,Subscriber,689763
-18,2016,Male,Customer,336
-19,2016,Male,Dependent,40
-20,2016,Male,Subscriber,2046798
-21,2017,,Customer,519335
-22,2017,,Dependent,3
-23,2017,,Subscriber,622
-24,2017,Female,Customer,60
-25,2017,Female,Subscriber,447793
-26,2017,Male,Customer,315
-27,2017,Male,Subscriber,1309381
+version https://git-lfs.github.com/spec/v1
+oid sha256:4fa6c6a131d2370bdee2d277d1d58fdf92cede2a3c2c0472531afce674c59e05
+size 820

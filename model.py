@@ -15,10 +15,12 @@ import datetime as dt
 
 violation_file = os.path.join('Speed_Camera_Violations.csv')
 station_file = os.path.join('Stations', 'Divvy_Stations_2017_Q3Q4.csv')
+rides_file = os.path.join('trips_cleaned', 'trips_count.csv')
 
 # Read witih Pandas
 violations_df = pd.read_csv(violation_file)
 stations_df = pd.read_csv(station_file)
+trips_df = pd.read_csv(rides_file)
 
 del stations_df['Unnamed: 7']   
 
@@ -58,6 +60,17 @@ class Violations(Base):
     location = Column(String)
     violation_id = Column(Integer, primary_key=True)
 
+# Define a Base class for Trips
+class Trips(Base):
+    __tablename__ = "trips"
+    
+    year = Column(Integer)
+    gender = Column(String)
+    user_type = Column(String)
+    trip_count = Column(Integer)
+    count_id = Column(Integer, primary_key=True)
+
+
 # Create database engine
 # engine = create_engine("sqlite:///bikeshare_traffic.sqlite")
 
@@ -73,6 +86,7 @@ session = Session(bind=engine)
 # Write data stored in a DataFrame to a SQL database
 violations_df.to_sql(name='violations', con=engine, if_exists = 'replace', index=False)
 stations_df.to_sql(name='stations', con=engine, if_exists = 'replace', index=False)
+trips_df.to_sql(name='trips', con=engine, if_exists = 'replace', index=False)
 session.commit()
 
 # Query the Stations table
@@ -86,6 +100,10 @@ for violation in violation_list:
     print(violation.address , violation.camera_id ,violation.violation_date ,violation.violations,
           violation.x_coordinate ,violation.y_coordinate ,violation.latitude ,violation.longitude,
           violation.location ,violation.violation_id )
+    
+trips_count = session.query(Trips)
+for trip in trips_count:
+    print(trip.year, trip.gender, trip.user_type, trip.trip_count, trip.count_id)
     
 if __name__ == '__main__':
 
