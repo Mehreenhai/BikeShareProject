@@ -1,5 +1,3 @@
-// First plot merge file
-
 var ChicagoCoords = [41.8781, -87.6298];
 var mapZoomLevel = 10;
 
@@ -21,7 +19,19 @@ var bikeStations2015 = [];
 var bikeStations2016 = [];
 var bikeStations2017 = [];
 
-// Temp Icon for the bike stations
+var violations2014 = [];
+var violations2015 = [];
+var violations2016 = [];
+var violations2017 = [];
+var violations2018 = [];
+
+var count2014 = [];
+var count2015 = [];
+var count2016 = [];
+var count2017 = [];
+var count2018 = [];
+
+// Icon for the bike stations
 var blueIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -68,7 +78,6 @@ var redIcon = new L.Icon({
 });
 
 // json read of station data
-
 d3.json(stations_url, function(error, response) {
     console.log(response);
 
@@ -76,85 +85,112 @@ d3.json(stations_url, function(error, response) {
         throw error;
     }
 
-    //json read of the violatio data
+    //json read of the violation data
+    d3.json(violations_url, function(responseViolation){
+        console.log(responseViolation);
 
-    d3.json(violations_url, function(response_violation){
+            // store station data into iterable list
+            var stationsList = response.online_date;
 
-            var bike_data = response["online_data"];
-
-            var heatArray = [];
-            var violation_count = [];
-            
-            var violation_list = response_violation["violation_address"];
-            var violation_lat= response_violation["violation_lat"];
-            var violation_long = response_violation["violation_long"];
-            var viocount = response_violation["violation_count"];
-
-            // bike station for loop
-
-            for (var i=0; i<550; i++) {
+            // bike station for loope
+            for (var i=0; i< stationsList.length; i++) {
 
                 var $lat = response.station_lat[i];
                 var $long = response.station_long[i];
-                var $date = response.online_date[i];
-                // console.log(station);
-
-                
+                var $date = response.online_date[i];               
 
                 $year = $date.substring(0,4);
                 console.log("Year: " + $year);
                 
                 if ($year == "2017") {
-
                     bikeStations2017.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: blueIcon}));
-
-                    console.log("2017 bike," + $date);
-
-                } else if ($year > "2016"){
-
+                } 
+                else if ($year > "2016"){
                     bikeStations2016.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: yellowIcon}));
-
-                    console.log("2016 bike," + $date);
-
-                } else if ($year > "2015") {
-
+                } 
+                else if ($year > "2015") {
                     bikeStations2015.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: greenIcon}));
-
-                } else if ($year > "2014") {
-
+                } 
+                else if ($year > "2014") {
                     bikeStations2014.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: orangeIcon}));
-
-                } else {
-
+                } 
+                else {
                     bikeStations2013.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: redIcon}));
-
-                }       
-                    
+                }         
             };
 
+            // store violation data into iterable list
+            var violationsList = responseViolation["violation_address"];
+
             // violation for loop
+            for (var i = 0; i < violationsList.length; i++) {
 
-            for (var i = 0; i < violation_list.length; i++) {
-                // var violation = violation_list[i];
-                if (violation_list) {
-                    heatArray.push([parseFloat(violation_lat[i]), parseFloat(violation_long[i])]);
-                    violation_count.push(viocount[i]);
+                var violationAddress = responseViolation["violation_address"][i];
+                var violationLat= responseViolation["violation_lat"][i];
+                var violationLong = responseViolation["violation_long"][i];
+                var violationCount = responseViolation["violation_count"][i];
+                var violationDate = responseViolation["violation_date"][i];
+
+                violationYear = violationDate.substring(0,4);
+                console.log("Year: " + violationYear);
+
+                if (violationYear == '2014') {
+                    violations2014.push([parseFloat(violationLat), parseFloat(violationLong)]);
+                    count2014.push(violationCount);
                 }
-            }
-            console.log(heatArray);
+                else if (violationYear == '2015') {
+                    violations2015.push([parseFloat(violationLat), parseFloat(violationLong)]);
+                    count2015.push(violationCount);
+                }
+                else if (violationYear == '2016') {
+                    violations2016.push([parseFloat(violationLat), parseFloat(violationLong)]);
+                    count2016.push(violationCount);
+                }
+                else if (violationYear == '2017') {
+                    violations2017.push([parseFloat(violationLat), parseFloat(violationLong)]);
+                    count2017.push(violationCount);
+                }
+                else if (violationYear == '2018') {
+                    violations2017.push([parseFloat(violationLat), parseFloat(violationLong)]);
+                    count2018.push(violationCount);
+                }
+            };
 
-            // console.log("BikeStations: " + bikeStations);
+            // station layers by year
             var stationsLayer2017 = L.layerGroup(bikeStations2017);
             var stationsLayer2016 = L.layerGroup(bikeStations2016);
             var stationsLayer2015 = L.layerGroup(bikeStations2015);
             var stationsLayer2014 = L.layerGroup(bikeStations2014);
             var stationsLayer2013 = L.layerGroup(bikeStations2013);
             
+            // violation layers by year
+            var violationsLayer2014 = L.heatLayer(violations2014, {
+                radius: 10 * count2014,
+                blur: 35
+            });
+            var violationsLayer2015 = L.heatLayer(violations2015, {
+                radius: 10 * count2015,
+                blur: 35
+            });
+            var violationsLayer2016 = L.heatLayer(violations2016, {
+                radius: 10 * count2016,
+                blur: 35
+            });
+            var violationsLayer2017 = L.heatLayer(violations2017, {
+                radius: 10 * count2017,
+                blur: 35
+            });
+            var violationsLayer2018 = L.heatLayer(violations2018, {
+                radius: 10 * count2018,
+                blur: 35
+            });
+            
             var myMap = L.map("map-id", {
                 center: ChicagoCoords,
                 zoom: mapZoomLevel,
                 layers: [lightmap, stationsLayer2017, stationsLayer2016, stationsLayer2015,
-                    stationsLayer2014, stationsLayer2013]
+                    stationsLayer2014, stationsLayer2013, violationsLayer2014, violationsLayer2015,
+                    violationsLayer2016, violationsLayer2017, violationsLayer2018]
             });
             
             var baseMaps = {
@@ -165,18 +201,17 @@ d3.json(stations_url, function(error, response) {
                 "2017 Stations" : stationsLayer2017,
                 "2016 Stations" : stationsLayer2016,
                 "2015 Stations" : stationsLayer2015,
-                "2014 Stations" : stationsLayer2014,
-                "2013 Stations" : stationsLayer2013,   
-            }
+                "2014 Stations" : stationsLayer2014, 
+                "2013 Stations" : stationsLayer2013,
+                "2018 Violations" : violationsLayer2018, 
+                "2017 Violations" : violationsLayer2017, 
+                "2016 Violations" : violationsLayer2016,
+                "2015 Violations" : violationsLayer2015,
+                "2014 Violations" : violationsLayer2014    
+            };
             
             L.control
                 .layers(baseMaps, overLayLayers, {collapsed: false})
                 .addTo(myMap);
-
-            L.heatLayer(heatArray, {
-                radius: 10 * violation_count,
-                blur: 35
-            }).addTo(myMap);
-
     });
 });
