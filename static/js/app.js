@@ -107,13 +107,13 @@ d3.json(stations_url, function(error, response) {
                 if ($year == "2017") {
                     bikeStations2017.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: blueIcon}));
                 } 
-                else if ($year > "2016"){
+                else if ($year == "2016"){
                     bikeStations2016.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: yellowIcon}));
                 } 
-                else if ($year > "2015") {
+                else if ($year == "2015") {
                     bikeStations2015.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: greenIcon}));
                 } 
-                else if ($year > "2014") {
+                else if ($year == "2014") {
                     bikeStations2014.push(L.marker([parseFloat($lat), parseFloat($long)], {icon: orangeIcon}));
                 } 
                 else {
