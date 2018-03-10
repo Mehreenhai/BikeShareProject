@@ -18,6 +18,15 @@ html, body {
   background-color: White;
 }
 
+#timeline2 {
+  background-image: url("https://github.com/Mehreenhai/BikeShareProject/blob/master/bikewheel.png?raw=true");
+  background-size: 57% 57%;
+  background-repeat: no-repeat;
+  background-position: 76px 100px; 
+  
+  
+  
+}
 .bg {
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
 }

@@ -112,10 +112,10 @@ console.log(viol_year);
             datasets: [{
                 data: ctx2_value,
                 backgroundColor:[
-                    'rgba(255,105,180,0.4)','rgba(0,0,255,0.4)'
+                    'rgba(255,105,180,0.4)','rgba(0,255,255,0.4)'
                     ],
                 borderColor: [
-                    'rgba(255,105,180,1)','rgba(0,0,255,1)'
+                    'rgba(255,105,180,1)','rgba(0,255,255,1)'
                 ],
                 borderWidth: 1
                         
@@ -129,6 +129,63 @@ console.log(viol_year);
         }
     });
 
+// CREATING STACKED BAR CHART
+
+    var user_type = responseTrips.user_type_analysis
+    var ctx3_year = []
+    var ctx3_user_sub = []
+    var ctx3_user_cust = []
+
+    for (var i =0;i<user_type.length; i++) {
+        year = user_type[i][0]
+        type = user_type[i][1]
+        value = user_type[i][2]
+
+        if (year == 2017){
+            value = value*2
+        } else {
+            value = value
+        }
+                if (type == "Subscriber") {
+                    ctx3_user_sub.push(value)
+                    ctx3_year.push(year)
+                } else {
+                    ctx3_user_cust.push(value)
+                }
+        
+                
+            
+            }
+
+
+    var stackedBar = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+                labels: ctx3_year,
+                datasets: [{
+                  type: 'bar',
+                  label: 'Subscribers',
+                  data: ctx3_user_sub,
+                  borderColor: 'black',
+                  fill: false
+                }, {
+                  type: 'bar',
+                  label: 'Customers',
+                  backgroundColor: "tomato",
+                  data: ctx3_user_cust,
+                }]
+              },
+        options: {
+            scales: {
+                xAxes: [{
+                    stacked: true
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            }
+        }
+    });
 
 
 });

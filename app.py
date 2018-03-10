@@ -111,8 +111,9 @@ def trips():
                             )
 
         user_type_analysis = (session
-                                .query(Trips.year,Trips.user_type, func.sum(Trips.trip_count))
-                                .group_by(Trips.year,Trips.user_type)
+                                .query(Trips.year, Trips.user_type, func.sum(Trips.trip_count))
+                                .group_by(Trips.year, Trips.user_type)
+                                .filter(Trips.user_type.in_(["Subscriber","Customer"]))
                                 .all()
                                 )
 
