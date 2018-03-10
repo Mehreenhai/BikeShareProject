@@ -31,6 +31,8 @@ var count2016 = [];
 var count2017 = [];
 var count2018 = [];
 
+heatRadius = 100;
+
 // Icon for the bike stations
 var blueIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
@@ -151,7 +153,7 @@ d3.json(stations_url, function(error, response) {
                     count2017.push(violationCount);
                 }
                 else if (violationYear == '2018') {
-                    violations2017.push([parseFloat(violationLat), parseFloat(violationLong)]);
+                    violations2018.push([parseFloat(violationLat), parseFloat(violationLong)]);
                     count2018.push(violationCount);
                 }
             };
@@ -165,23 +167,23 @@ d3.json(stations_url, function(error, response) {
             
             // violation layers by year
             var violationsLayer2014 = L.heatLayer(violations2014, {
-                radius: 10 * count2014,
+                radius: 20 * count2014,
                 blur: 35
             });
             var violationsLayer2015 = L.heatLayer(violations2015, {
-                radius: 10 * count2015,
+                radius: heatRadius * count2015,
                 blur: 35
             });
             var violationsLayer2016 = L.heatLayer(violations2016, {
-                radius: 10 * count2016,
+                radius: heatRadius * count2016,
                 blur: 35
             });
             var violationsLayer2017 = L.heatLayer(violations2017, {
-                radius: 10 * count2017,
+                radius: heatRadius * count2017,
                 blur: 35
             });
             var violationsLayer2018 = L.heatLayer(violations2018, {
-                radius: 10 * count2018,
+                radius: heatRadius * count2018,
                 blur: 35
             });
             
